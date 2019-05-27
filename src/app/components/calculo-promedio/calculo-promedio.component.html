@@ -1,0 +1,92 @@
+<div class="content">
+  <div class="cabecera">
+    <app-header></app-header>
+  </div>
+  <div class="cuerpo">
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <h3 class="text-center titulo">CALCULA TU PROMEDIO</h3>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <h2 class="text-center promedio font-weight-bold"
+            [ngClass]="{'error': promedio === 'ERROR', 'aprobado' : promedioNumber >= ajustes.Aprobacion, 'reprobado' : promedioNumber < ajustes.Aprobacion}">
+            {{ promedio }}</h2>
+        </div>
+      </div>
+
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <p id="mensaje" class="text-center text-muted">{{ mensaje }}</p>
+        </div>
+      </div>
+
+      <div class="row justify-content-md-center"
+        *ngIf="ajustes.HayExamen && esPorcentajeTotal && promedio != 'ERROR' && promedioNumber < ajustes.Aprobacion">
+        <div class="col col-lg-6">
+          <button type="button" class="btn btn-secondary btn-block" (click)="getExamen()">
+            Probar suerte en el examen
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="row justify-content-md-center">
+        <div class="input-group col col-lg-3">
+          <p><strong>Nota</strong></p>
+        </div>
+        <div class="input-group col col-lg-3" [ngClass]="{'d-none' : seleccionCalculo === 'simple'}">
+          <p><strong>{{ nombreSegundoValor }}</strong></p>
+        </div>
+      </div>
+      <app-notas-porcentajes *ngFor="let notaPorcentaje of notasPorcentajes; let i=index" [idNP]="i"
+        [seleccionCalculo]="seleccionCalculo" (notaEvent)="receiveNota($event,i)"
+        (porcentajeEvent)="receivePorcentaje($event,i)" (pesoEvent)="receivePeso($event,i)">
+      </app-notas-porcentajes>
+
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-3">
+          <button type="button" class="btn btn-lg btn-block btn-success" (click)="addNotaPorcentaje()" id="agregar"><i
+              class="fa fa-plus-circle"></i> Agregar</button>
+        </div>
+
+        <div class="col col-lg-3">
+          <button type="button" class="btn btn-lg btn-block btn-danger" (click)="removeNotaPorcentaje()" id="quitar"><i
+              class="fa fa-minus-circle"></i> Quitar</button>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <button type="button" class="btn btn-lg btn-block btn-primary" (click)="calcularPromedio()"
+            id="calcular">Calcular</button>
+        </div>
+      </div>
+      <br>
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6 text-center">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="ponderado" name="opcionCalculo" value="ponderado"
+              [(ngModel)]="seleccionCalculo" (ngModelChange)="setNombreSegundo($event)">
+            <label class="form-check-label" for="ponderado">Ponderado</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="simple" name="opcionCalculo" value="simple"
+              [(ngModel)]="seleccionCalculo" (ngModelChange)="setNombreSegundo($event)">
+            <label class="form-check-label" for="simple">Simple</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="creditos" name="opcionCalculo" value="creditos"
+              [(ngModel)]="seleccionCalculo" (ngModelChange)="setNombreSegundo($event)">
+            <label class="form-check-label" for="creditos">Créditos</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-promocion></app-promocion>
+  </div>
+  <div class="pie">
+    <app-footer></app-footer>
+  </div>
+</div>

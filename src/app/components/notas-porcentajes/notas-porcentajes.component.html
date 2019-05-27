@@ -1,0 +1,23 @@
+<form>
+  <div class="row justify-content-md-center">
+    <div class="input-group col col-lg-3">
+      <input type="text" name="inputNota" (ngModelChange)="setNota($event)" [ngModel]="nota"
+        class="form-control text-center"
+        [ngClass]="{'is-invalid' : (inputNota.invalid && (inputNota.dirty || inputNota.touched))}" #inputNota="ngModel"
+        placeholder="Ej. 4.5" required pattern="[0-9]+(\.[0-9]+)?" [ngModelOptions]="{ updateOn: 'blur' }">
+
+    </div>
+    <div class="input-group col col-lg-3" [ngClass]="{ 'd-none' : seleccionCalculo === 'simple' }">
+      <input type="text" name="inputPorcentaje" (ngModelChange)="setPorcentaje($event)" [ngModel]="porcentaje"
+        class="form-control pc text-center" #inputPorcentaje="ngModel" placeholder="Ej. 30"
+        aria-describedby="basic-addon1" pattern="[0-9]+(\.[0-9]+)?" [ngModelOptions]="{ updateOn: 'blur' }"
+        [ngClass]="{'is-invalid' : (inputPorcentaje.invalid && (inputPorcentaje.dirty || inputPorcentaje.touched))}"
+        required>
+      <div *ngIf="seleccionCalculo === 'ponderado'" class="input-group-append">
+        <span class="input-group-text" id="basic-addon1">%</span>
+      </div>
+
+    </div>
+  </div>
+</form>
+<br>

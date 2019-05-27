@@ -1,0 +1,108 @@
+<div class="content">
+  <div class="cabecera">
+    <app-header></app-header>
+  </div>
+  <div class="cuerpo">
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <h3 class="text-center titulo">CALCULA TU NOTA</h3>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <h2 class="text-center promedio font-weight-bold"
+            [ngClass]="{'error': resultado === 'ERROR', 'aprobado' : resultadoNumber >= ajustes.Aprobacion, 'reprobado' : resultadoNumber < ajustes.Aprobacion}">
+            {{ resultado }}</h2>
+        </div>
+      </div>
+
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <p id="mensaje" class="text-center text-muted">{{ mensaje }}</p>
+        </div>
+      </div>
+
+      <div class="row justify-content-md-center">
+        <div class="input-group col col-lg-3">
+          <p><strong>Puntaje obtenido (*)</strong></p>
+        </div>
+        <div class="input-group col col-lg-3">
+          <p><strong>Puntaje Total</strong></p>
+        </div>
+      </div>
+      <form>
+        <div class="row justify-content-md-center">
+          <div class="input-group col col-lg-3">
+            <input type="text" name="inputPtsObtenido" [ngModel]="ptsObtenido" (ngModelChange)="setPtsObtenido($event)"
+              [ngClass]="{'is-invalid' : (inputPtsObtenido.invalid && (inputPtsObtenido.dirty || inputPtsObtenido.touched))}"
+              #inputPtsObtenido="ngModel" [ngModelOptions]="{ updateOn: 'blur' }" class="form-control text-center"
+              placeholder="Ej. 20" required pattern="[0-9]+(\.[0-9]+)?">
+          </div>
+          <div class="input-group col col-lg-3">
+            <input type="text" name="inputPtsTotal" [ngModel]="ptsTotal" (ngModelChange)="setPtsTotal($event)"
+              [ngClass]="{'is-invalid' : (inputPtsTotal.invalid && (inputPtsTotal.dirty || inputPtsTotal.touched))}"
+              #inputPtsTotal="ngModel" [ngModelOptions]="{ updateOn: 'blur' }" class="form-control text-center"
+              placeholder="Ej. 35" required pattern="[0-9]+(\.[0-9]+)?">
+          </div>
+        </div>
+        <br>
+
+        <div class="row justify-content-md-center">
+          <div class="input-group col col-lg-3">
+            <p><strong>Puntaje base</strong></p>
+          </div>
+          <div class="input-group col col-lg-3">
+            <p><strong>Porcentaje de exigencia</strong></p>
+          </div>
+        </div>
+        <div class="row justify-content-md-center">
+          <div class="input-group col col-lg-3">
+            <input type="text" name="inputPtsBase" [ngModel]="ptsBase" (ngModelChange)="setPtsBase($event)"
+              [ngClass]="{'is-invalid' : (inputPtsBase.invalid && (inputPtsBase.dirty || inputPtsBase.touched))}"
+              #inputPtsBase="ngModel" [ngModelOptions]="{ updateOn: 'blur' }" class="form-control pc text-center"
+              placeholder="Ej. 0" required>
+          </div>
+          <div class="input-group col col-lg-3">
+            <input type="text" name="inputPtsExigencia" [ngModel]="ptsExigencia"
+              (ngModelChange)="setPtsExigencia($event)"
+              [ngClass]="{'is-invalid' : (inputPtsExigencia.invalid && (inputPtsExigencia.dirty || inputPtsExigencia.touched))}"
+              #inputPtsExigencia="ngModel" [ngModelOptions]="{ updateOn: 'blur' }" class="form-control pc text-center"
+              placeholder="Ej. 60" aria-describedby="basic-addon-puntaje" required>
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon-puntaje">%</span>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <button type="button" class="btn btn-block btn-primary" (click)="calcularNota()">Calcular</button>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <button type="button" class="btn btn-block btn-primary" (click)="calcularEscala(seccionEscala)">Ver
+            escala</button>
+        </div>
+      </div>
+
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-6">
+          <small class="form-text text-muted">
+            (*) Para generar una escala de notas no es necesario señalar el puntaje obtenido
+          </small>
+        </div>
+      </div>
+
+      <app-promocion></app-promocion>
+
+      <div #seccionEscala>
+        <app-vista-escala [escalaNotas]="escalaNotas"></app-vista-escala>
+      </div>
+    </div>
+    <div class="pie">
+      <app-footer></app-footer>
+    </div>
+  </div>

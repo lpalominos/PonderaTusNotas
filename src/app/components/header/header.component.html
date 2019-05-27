@@ -1,0 +1,202 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-blue">
+  <a class="navbar-brand" routerLink="/">
+    <img src="assets/img/roundPromedio.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    Pondera Tus Notas</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-label="Toggle navigation" [attr.aria-expanded]="!isCollapsed"
+    (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent"
+    [ngClass]="{'show': !isCollapsed}">
+    <ul class="navbar-nav">
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="/">Inicio</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/promedio">Calcular promedio</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/escala">Calcular escala</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" [routerLink]="" (click)="ajustesModal.show()"><i class="fa fa-sliders"></i> Ajustes</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div bsModal #ajustesModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Ajustes</h4>
+        <button type="button" class="close pull-right" (click)="ajustesModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+
+            <div class="form-group col-md-3">
+              <label for="maxima">Nota Máxima</label>
+              <input type="text" (ngModelChange)="setMaxima($event)" [ngModel]="ajustes.Maxima"
+                [ngModelOptions]="{ updateOn: 'change' }" name="maxima" #maxima="ngModel"
+                class="form-control text-center font-weight-bold"
+                [ngClass]="{'is-invalid' : (maxima.invalid && (maxima.dirty || maxima.touched)), 'is-valid' : !(maxima.invalid && (maxima.dirty || maxima.touched))}"
+                pattern="[0-9]+(\.[0-9]+)?" required>
+              <div *ngIf="maxima.invalid && (maxima.dirty || maxima.touched)" class="invalid-feedback">
+                <div *ngIf="maxima.errors.required">
+                  Ingrese una nota
+                </div>
+                <div *ngIf="maxima.errors.pattern">
+                  Ajustese al formato solicitado Ej. 7.0
+                </div>
+                <div *ngIf="maxima.errors.menorMinima">
+                  La nota máxima debe ser mayor a la mínima
+                </div>
+                <div *ngIf="maxima.errors.menorAprobacion">
+                  La nota máxima debe ser mayor a la nota de aprobación
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="minima">Nota Mínima</label>
+              <input type="text" (ngModelChange)="setMinima($event)" [ngModel]="ajustes.Minima"
+                [ngModelOptions]="{ updateOn: 'change' }" name="minima"
+                class="form-control text-center font-weight-bold"
+                [ngClass]="{'is-invalid' : (minima.invalid && (minima.dirty || minima.touched)), 'is-valid' : !(minima.invalid && (minima.dirty || minima.touched))}"
+                pattern="[0-9]+(\.[0-9]+)?" #minima="ngModel" required>
+              <div *ngIf="minima.invalid && (minima.dirty || minima.touched)" class="invalid-feedback">
+                <div *ngIf="minima.errors.required">
+                  Ingrese una nota
+                </div>
+                <div *ngIf="minima.errors.pattern">
+                  Ajustese al formato solicitado Ej. 1.0
+                </div>
+                <div *ngIf="minima.errors.mayorMaxima">
+                  La nota mínima debe ser menor a la máxima
+                </div>
+                <div *ngIf="minima.errors.mayorAprobacion">
+                  La nota mínima debe ser menor a la nota de aprobación
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="aprobacion">Nota de aprobación</label>
+              <input type="text" (ngModelChange)="setAprobacion($event)" [ngModel]="ajustes.Aprobacion"
+                [ngModelOptions]="{ updateOn: 'change' }" name="aprobacion" #aprobacion="ngModel"
+                class="form-control text-center font-weight-bold"
+                [ngClass]="{'is-invalid' : (aprobacion.invalid && (aprobacion.dirty || aprobacion.touched)), 'is-valid' : !(aprobacion.invalid && (aprobacion.dirty || aprobacion.touched))}"
+                pattern="[0-9]+(\.[0-9]+)?" required>
+              <div *ngIf="aprobacion.invalid && (aprobacion.dirty || aprobacion.touched)" class="invalid-feedback">
+                <div *ngIf="aprobacion.errors.required">
+                  Ingrese una nota
+                </div>
+                <div *ngIf="aprobacion.errors.pattern">
+                  Ajustese al formato solicitado Ej. 4.0
+                </div>
+                <div *ngIf="aprobacion.errors.mayorMaxima">
+                  La nota de aprobación debe ser menor a la máxima
+                </div>
+                <div *ngIf="aprobacion.errors.menorMinima">
+                  La nota de aprobación debe ser mayor a la mínima
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="cantdecimales">Decimales</label>
+              <select class="form-control text-center font-weight-bold" id="cantdecimales"
+                (ngModelChange)="setDecimales($event)" [ngModel]="ajustes.Decimales" name="decimales">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+
+            </div>
+          </div>
+          <div class="form-row col s4">
+            <div class="form-group col s6">
+              <input type="checkbox" class="form-check-input" (ngModelChange)="setAproximacion($event)"
+                [ngModel]="ajustes.Aproximacion" id="aproximar" name="aproximar">
+              <label class="form-check-label" for="aproximar">Aproximar</label>
+
+            </div>
+            <div class="form-group col s6">
+              <input type="checkbox" class="form-check-input" (ngModelChange)="setHayExamen($event)"
+                [(ngModel)]="ajustes.HayExamen" name="examen">
+              <label class="form-check-label" for="examen">Examen final</label>
+
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="pExamen">Porcentaje examen final</label>
+              <input type="text" (ngModelChange)="setPorcentajeExamen($event)" [ngModel]="ajustes.PorcentajeExamen"
+                [ngModelOptions]="{ updateOn: 'change' }" name="pExamen" #pExamen="ngModel"
+                class="form-control text-center font-weight-bold"
+                [ngClass]="{'is-invalid' : (pExamen.invalid && (pExamen.dirty || pExamen.touched)), 'is-valid' : !(pExamen.invalid && (pExamen.dirty || pExamen.touched))}"
+                pattern="[0-9]+(\.[0-9]+)?" required>
+              <div *ngIf="pExamen.invalid && (pExamen.dirty || pExamen.touched)" class="invalid-feedback">
+                <div *ngIf="pExamen.errors.required">
+                  Ingrese un porcentaje
+                </div>
+                <div *ngIf="pExamen.errors.pattern">
+                  Ajustese al formato solicitado Ej. 40
+                </div>
+                <div *ngIf="pExamen.errors.mayorPorcentaje">
+                  El valor no puede superar el 100%
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="aprobacionExamen">Nota de aprobación examen</label>
+              <input type="text" (ngModelChange)="setAprobacionExamen($event)" [ngModel]="ajustes.AprobacionExamen"
+                [ngModelOptions]="{ updateOn: 'change' }" name="aprobacionExamen" #aprobacionExamen="ngModel"
+                pattern="[0-9]+(\.[0-9]+)?" class="form-control text-center font-weight-bold"
+                [ngClass]="{'is-invalid' : (aprobacionExamen.invalid && (aprobacionExamen.dirty || aprobacionExamen.touched)), 'is-valid' : !(aprobacionExamen.invalid && (aprobacionExamen.dirty || aprobacionExamen.touched))}"
+                required>
+              <div *ngIf="aprobacionExamen.invalid && (aprobacionExamen.dirty || aprobacionExamen.touched)"
+                class="invalid-feedback">
+                <div *ngIf="aprobacionExamen.errors.required">
+                  Ingrese una nota
+                </div>
+                <div *ngIf="aprobacionExamen.errors.pattern">
+                  Ajustese al formato solicitado Ej. 4.0
+                </div>
+                <div *ngIf="aprobacionExamen.errors.mayorMaxima">
+                  La nota de aprobación debe ser menor a la máxima
+                </div>
+                <div *ngIf="aprobacionExamen.errors.menorMinima">
+                  La nota de aprobación debe ser mayor a la mínima
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="incremento">Incremento escala de notas</label>
+              <select class="form-control text-center font-weight-bold" (ngModelChange)="setIncremento($event)"
+                [ngModel]="ajustes.IncrementoEscala" id="incremento" name="incremento">
+                <option value="1">1</option>
+                <option value="0.5">0.5</option>
+                <option value="0.25">0.25</option>
+              </select>
+            </div>
+            <div class="form-group col-md-12">
+              <small class="form-text text-muted">
+                (*) Los campos inválidos no serán guardados
+              </small>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="ajustesModal.hide()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

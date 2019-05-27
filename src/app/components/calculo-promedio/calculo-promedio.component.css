@@ -1,0 +1,44 @@
+.content {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 100vh;
+    background-color: #eceff1;
+    position: relative;
+}
+
+.cuerpo {
+    padding-bottom: 56px;
+    padding-top: 20px;
+    /* Height of the footer */
+}
+
+.pie {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.btn-primary {
+    margin-top: 1rem;
+}
+
+.titulo {
+    font-size: 2rem;
+}
+
+.promedio {
+    font-size: 5rem;
+}
+
+.reprobado {
+    color: red;
+}
+
+.aprobado {
+    color: blue;
+}
+
+.error {
+    color: black;
+}

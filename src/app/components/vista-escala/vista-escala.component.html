@@ -1,0 +1,24 @@
+<div class="container" *ngIf="escalaNotas.length > 0">
+  <h3 class="text-center titulo">ESCALA</h3>
+  <div class="row justify-content-md-center">
+    <div class="col-lg-2 col-sm-4" *ngFor="let in of counter((escalaNotas.length)/10) ;let cont = index;">
+      <table class="table table-bordered">
+        <thead class="bg-blue">
+          <tr>
+            <th>Puntaje</th>
+            <th>Nota</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <tr *ngFor="let resultado of escalaNotas.slice((cont*10),(cont*10)+10); let i=index;">
+            <td class="text-center">{{ resultado.puntaje }}</td>
+            <td class="text-center"
+              [ngClass]="{'aprobado' : +resultado.nota >= ajustes.Aprobacion, 'reprobado' : +resultado.nota < ajustes.Aprobacion}">
+              {{ resultado.nota }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

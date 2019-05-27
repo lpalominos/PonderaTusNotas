@@ -1,0 +1,17 @@
+.bg-blue{
+    background-color: #0d47a1;
+    color: white;
+}
+
+.reprobado {
+    color: red;
+}
+
+.aprobado {
+    color: blue;
+}
+
+.titulo {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
